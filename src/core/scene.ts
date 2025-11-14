@@ -80,7 +80,7 @@ export class Scene {
      * Calls the render method on each entity
      */
     public render() {
-        this.entities.forEach(e => e.render());
+        this.entities.forEach(e => this.entities.push(e));
     }
 
     /**
@@ -105,16 +105,29 @@ export class Scene {
         const endY = cameraPosition.y + viewPortDimensions.y;
         const startX = cameraPosition.x;
         const endX = cameraPosition.x + viewPortDimensions.x;
+        const visibleEntities = new Map<string, Entity>();
+        for (const entity of this.entities) {
+            const { y, x } = entity.position;
+            if (
+                entity.getSprite.length === 0 ||
+                y < startY ||
+                y >= endY ||
+                x < startX ||
+                x >= endX
+            ) {
+                continue;
+            }
+            const key = `${y}:${x}`;
+            if (!visibleEntities.has(key)) {
+                visibleEntities.set(key, entity);
+            }
+        }
+
         for (let y = startY; y < endY; y++) {
             for (let x = startX; x < endX; x++) {
                 // Check if coordinates are within scene bounds
                 if (y >= 0 && y < this.height && x >= 0 && x < this.width) {
-                    // Find entities at this position, excluding those with empty sprites (like Camera)
-                    const entity = this.entities.find(e =>
-                        e.position.y === y &&
-                        e.position.x === x &&
-                        e.getSprite.length > 0
-                    );
+                    const entity = visibleEntities.get(`${y}:${x}`);
                     if (entity) {
                         out += entity.getSprite;
                     } else {
@@ -140,5 +153,10 @@ export class Scene {
      */
     public updateEntity(entity: Entity, deltaTime: number) {
         entity.update(deltaTime);
+    }
+
+    public remove(entity: Entity){
+        // Remove entity from the entities array based on its id
+        this.entities = this.entities.filter(e => e.getId !== entity.getId);
     }
 }

@@ -4,7 +4,6 @@
  */
 import type { Point } from "./types/point";
 import type { Flags } from "./types/flags";
-import { Global } from "./global";
 
 /**
  * Base Entity class representing any object in the game world
@@ -74,19 +73,6 @@ export class Entity {
      * Add this entity to the current scene
      * This makes the entity visible and part of the game world
      */
-    public render() {
-        const currentScene = Global.getScenes.getCurrentScene;
-        currentScene.addEntity(this);
-    }
-
-    /**
-     * Remove this entity from the current scene
-     * This removes the entity from the game world
-     */
-    public remove() {
-        const currentScene = Global.getScenes.getCurrentScene;
-        currentScene.removeEntity(this);
-    }
 
     /**
      * Update this entity (called every frame)

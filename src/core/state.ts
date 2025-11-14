@@ -29,7 +29,7 @@ export class State {
    * Check if a state value equals "true" (legacy boolean check)
    */
   public getStateAsBoolean(name: string): boolean {
-    return this.state[name] === "true";
+    return this.state[name] === true;
   }
 
   /**
