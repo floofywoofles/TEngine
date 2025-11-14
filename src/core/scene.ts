@@ -100,6 +100,7 @@ export class Scene {
      */
     public draw(cameraPosition: Point, viewPortDimensions: Point) {
         let out: string = "";
+        console.clear();
         // Only iterate through the visible viewport area
         const startY = cameraPosition.y;
         const endY = cameraPosition.y + viewPortDimensions.y;
