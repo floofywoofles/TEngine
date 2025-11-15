@@ -27,8 +27,8 @@ import {
 // Create scene (height, width, name)
 const scene = new Scene(30, 50, "My Game");
 
-// Create camera (y, viewportHeight, x, viewportWidth, sprite)
-const camera = new Camera(15, 20, 25, 40, "");
+// Create camera (y, viewportHeight, x, viewportWidth)
+const camera = new Camera(15, 20, 25, 40);
 
 // Create player entity (y, x, sprite)
 const player = new Entity(15, 25, "@");

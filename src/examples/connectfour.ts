@@ -81,8 +81,7 @@ class ConnectFourGame {
       Math.floor(sceneHeight / 2),
       sceneHeight,
       Math.floor(sceneWidth / 2),
-      sceneWidth,
-      ""
+      sceneWidth
     );
 
     // Create the scene

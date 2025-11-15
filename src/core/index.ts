@@ -18,6 +18,8 @@ export { EventBus, globalEventBus } from "./event-bus";
 export { TextEntity } from "./helpers/text-entity";
 export { Color, ColorHelper } from "./helpers/color";
 export { CollisionHelper } from "./helpers/collision";
+export { PathfindingHelper, Heuristic } from "./helpers/pathfinding";
+export type { PathfindingOptions } from "./helpers/pathfinding";
 
 // Global utilities
 export { setConfigMap, getConfigKey } from "./global";

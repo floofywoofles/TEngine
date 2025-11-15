@@ -61,8 +61,18 @@ scene.draw();
 ```typescript
 import { Camera } from "./src/core/camera";
 
-// Create a camera (y, viewportHeight, x, viewportWidth, sprite)
-const camera = new Camera(50, 20, 50, 40, "");
+// Create a camera (y, viewportHeight, x, viewportWidth)
+const camera = new Camera(50, 20, 50, 40);
+
+// Move the camera
+camera.setPosition(60, 60);
+camera.move(5, 5); // Move by delta
+
+// Change viewport size
+camera.setViewportSize(30, 50);
+
+// Center camera on a position
+camera.centerOn(player.getPosition().y, player.getPosition().x);
 
 // Use with scene
 const scene = new Scene(100, 100, "Game", camera);
@@ -193,6 +203,65 @@ if (CollisionHelper.wouldCollideAt(scene, player, newY, newX)) {
 // Get direction to target
 const dir = CollisionHelper.getDirectionTo(player, enemy);
 player.move(dir.dy, dir.dx); // Move toward enemy
+```
+
+### PathfindingHelper
+
+A* pathfinding algorithm for intelligent movement:
+
+```typescript
+import { PathfindingHelper, Heuristic } from "./src/core/helpers/pathfinding";
+
+// Find a path from start to goal
+const path = PathfindingHelper.findPath(
+  { y: 0, x: 0 },    // start
+  { y: 10, x: 10 },  // goal
+  20,                 // width
+  20,                 // height
+  {
+    allowDiagonal: true,
+    heuristic: Heuristic.Euclidean,
+    isWalkable: (y, x) => !walls.has(`${y},${x}`)
+  }
+);
+
+if (path) {
+  console.log(`Found path with ${path.length} steps`);
+}
+
+// Find path in scene (avoiding entities)
+const scenePath = PathfindingHelper.findPathInScene(
+  start,
+  goal,
+  scene,
+  { allowDiagonal: true }
+);
+
+// Find path avoiding specific entities
+const avoidPath = PathfindingHelper.findPathAvoidingEntities(
+  start,
+  goal,
+  scene,
+  [enemy1, enemy2],
+  { allowDiagonal: true }
+);
+
+// Smooth a path (remove unnecessary waypoints)
+const smoothPath = PathfindingHelper.smoothPath(path, (y, x) => {
+  return !walls.has(`${y},${x}`);
+});
+
+// Get next step in path
+const nextStep = PathfindingHelper.getNextStep(path, currentPosition);
+if (nextStep) {
+  entity.setPosition(nextStep.y, nextStep.x);
+}
+
+// Available heuristics
+Heuristic.Manhattan   // Best for 4-directional movement
+Heuristic.Euclidean   // Best for smooth movement
+Heuristic.Chebyshev   // Best for 8-directional movement
+Heuristic.Octile      // Optimized for diagonal movement
 ```
 
 ## Advanced Systems

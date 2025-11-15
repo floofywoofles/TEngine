@@ -6,7 +6,7 @@
 /**
  * Type for event listener callbacks
  */
-type EventListener = (data?: any) => void;
+type EventListener = (data?: unknown) => void;
 
 /**
  * EventBus class for publish/subscribe event system
@@ -57,7 +57,7 @@ export class EventBus {
    * @returns An unsubscribe function to remove this listener
    */
   public once(event: string, callback: EventListener): () => void {
-    const wrappedCallback: EventListener = (data?: any) => {
+    const wrappedCallback: EventListener = (data?: unknown) => {
       callback(data);
       unsubscribe();
     };
@@ -71,7 +71,7 @@ export class EventBus {
    * @param event - The event name to emit
    * @param data - Optional data to pass to listeners
    */
-  public emit(event: string, data?: any): void {
+  public emit(event: string, data?: unknown): void {
     const callbacks = this.listeners.get(event);
     if (!callbacks) {
       return;
