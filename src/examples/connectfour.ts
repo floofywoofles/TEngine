@@ -90,10 +90,10 @@ class ConnectFourGame {
     // Create text entities for UI
     const titleStartX = Math.floor((BOARD_WIDTH * 2 + 4 - "CONNECT FOUR".length) / 2);
     this.titleText = new TextEntity(0, titleStartX, "CONNECT FOUR", 2);
-    
+
     const statusY = BOARD_HEIGHT + 4;
     this.statusText = new TextEntity(statusY, 0, "", 2);
-    
+
     const controlsY = BOARD_HEIGHT + 5;
     this.controlsText = new TextEntity(controlsY, 0, "←→:Move Space:Drop Q:Quit", 2);
 
@@ -106,16 +106,18 @@ class ConnectFourGame {
    */
   private setupEventListeners(): void {
     // Listen for piece dropped event
-    this.events.on("piece-dropped", (data: { player: number; row: number; col: number }) => {
-      console.log(`Player ${data.player} dropped piece at (${data.row}, ${data.col})`);
+    this.events.on("piece-dropped", (data: unknown) => {
+      const eventData = data as { player: number; row: number; col: number };
+      console.log(`Player ${eventData.player} dropped piece at (${eventData.row}, ${eventData.col})`);
     });
 
     // Listen for game over event
-    this.events.on("game-over", (data: { winner: number | null; isDraw: boolean }) => {
-      if (data.isDraw) {
+    this.events.on("game-over", (data: unknown) => {
+      const eventData = data as { winner: number | null; isDraw: boolean };
+      if (eventData.isDraw) {
         console.log("Game ended in a draw!");
       } else {
-        console.log(`Player ${data.winner} wins!`);
+        console.log(`Player ${eventData.winner} wins!`);
       }
     });
   }
@@ -256,7 +258,7 @@ class ConnectFourGame {
     if (this.checkWin(targetRow, column)) {
       this.gameState.gameOver = true;
       this.gameState.winner = this.gameState.currentPlayer;
-      
+
       // Emit game over event
       this.events.emit("game-over", {
         winner: this.gameState.winner,
@@ -266,7 +268,7 @@ class ConnectFourGame {
       // Check for draw
       this.gameState.gameOver = true;
       this.gameState.isDraw = true;
-      
+
       // Emit game over event
       this.events.emit("game-over", {
         winner: null,
@@ -381,7 +383,7 @@ class ConnectFourGame {
     // Create cursor with color based on current player
     const color = this.gameState.currentPlayer === 1 ? Color.Red : Color.Yellow;
     const coloredCursor = ColorHelper.colorize(CURSOR_SPRITE, color);
-    
+
     this.cursorEntity = new Entity(cursorY, cursorX, coloredCursor);
     this.cursorEntity.setLayer(3); // Cursor on top layer
     this.scene.addEntity(this.cursorEntity);
@@ -452,10 +454,10 @@ class ConnectFourGame {
 
     // Apply color to message
     const coloredMessage = ColorHelper.style(message, Color.Bold, color);
-    
+
     // Center the message
     const startX = Math.floor((BOARD_WIDTH * 2 + 4 - message.length) / 2);
-    
+
     // Update status text position and content
     this.statusText.setText(coloredMessage);
     this.statusText.setPosition(BOARD_HEIGHT + 4, startX);
@@ -486,4 +488,3 @@ class ConnectFourGame {
 // Start the game
 // Create game instance - the constructor handles initialization
 new ConnectFourGame();
-

@@ -24,6 +24,26 @@ export class Scene {
         }
     }
 
+    /**
+     * Checks if a position is within the scene bounds
+     * @param y - The y coordinate to check
+     * @param x - The x coordinate to check
+     * @returns True if the position is within bounds, false otherwise
+     */
+    public isInBounds(y: number, x: number): boolean {
+        return y >= 0 && y < this.height && x >= 0 && x < this.width;
+    }
+
+    /**
+     * Checks if a position is out of bounds
+     * @param y - The y coordinate to check
+     * @param x - The x coordinate to check
+     * @returns True if the position is out of bounds, false otherwise
+     */
+    public isOutOfBounds(y: number, x: number): boolean {
+        return !this.isInBounds(y, x);
+    }
+
     public getName(): string {
         return this.name;
     }
