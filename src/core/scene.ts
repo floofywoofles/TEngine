@@ -10,7 +10,7 @@ export class Scene {
     private entities: Entity[] = [];
     private camera: Camera | undefined;
 
-    constructor(height: number, width: number, name: string, camera?: Camera){
+    constructor(height: number, width: number, name: string, camera?: Camera) {
         this.height = height;
         this.width = width;
         this.name = name;
@@ -49,7 +49,7 @@ export class Scene {
     }
 
     public addEntity(entity: Entity): boolean {
-        if(this.entities.find((e: Entity)=> e.getId() === entity.getId())){
+        if (this.entities.find((e: Entity) => e.getId() === entity.getId())) {
             return false;
         }
 
@@ -68,8 +68,8 @@ export class Scene {
      * @param x - The x coordinate
      * @returns The entity at that position, or undefined if none exists
      */
-    public getEntityAtPosition(y: number, x: number): Entity|undefined {
-        return this.entities.find((e)=>{
+    public getEntityAtPosition(y: number, x: number): Entity | undefined {
+        return this.entities.find((e) => {
             return e.getPosition().y === y && e.getPosition().x === x;
         })
     }
@@ -81,7 +81,7 @@ export class Scene {
      * @returns Array of entities at that position
      */
     public getEntitiesAtPosition(y: number, x: number): Entity[] {
-        return this.entities.filter((e)=>{
+        return this.entities.filter((e) => {
             return e.getPosition().y === y && e.getPosition().x === x;
         })
     }
@@ -98,7 +98,7 @@ export class Scene {
         return this.entities.filter((e) => {
             const pos = e.getPosition();
             return pos.y >= startY && pos.y < startY + height &&
-                   pos.x >= startX && pos.x < startX + width;
+                pos.x >= startX && pos.x < startX + width;
         });
     }
 
@@ -150,30 +150,30 @@ export class Scene {
 
         let out: string = "";
 
-        if(this.camera){
+        if (this.camera) {
             const { y: cameraY, x: cameraX } = this.camera.getPosition();
             const viewportHeight = this.camera.getViewportHeight();
             const viewportWidth = this.camera.getViewportWidth();
             const startY = cameraY - Math.floor(viewportHeight / 2);
             const startX = cameraX - Math.floor(viewportWidth / 2);
 
-            for(let y = 0; y < viewportHeight; ++y){
+            for (let y = 0; y < viewportHeight; ++y) {
                 const worldY = startY + y;
                 const rowInBounds = worldY >= 0 && worldY < this.height;
 
-                for(let x = 0; x < viewportWidth; ++x){
+                for (let x = 0; x < viewportWidth; ++x) {
                     const worldX = startX + x;
 
-                    if(!rowInBounds || worldX < 0 || worldX >= this.width){
+                    if (!rowInBounds || worldX < 0 || worldX >= this.width) {
                         out += "-";
                         continue;
                     }
 
                     // Get all entities at this position and render the one with highest layer
                     const entitiesHere = this.getEntitiesAtPosition(worldY, worldX);
-                    if(entitiesHere.length > 0){
+                    if (entitiesHere.length > 0) {
                         // Sort by layer and get the topmost entity
-                        const topEntity = entitiesHere.reduce((top, current) => 
+                        const topEntity = entitiesHere.reduce((top, current) =>
                             current.getLayer() > top.getLayer() ? current : top
                         );
                         out += topEntity.getSprite();
@@ -188,13 +188,13 @@ export class Scene {
             return;
         }
 
-        for(let y = 0; y < this.height; ++y){
-            for(let x = 0; x < this.width; ++x){
+        for (let y = 0; y < this.height; ++y) {
+            for (let x = 0; x < this.width; ++x) {
                 // Get all entities at this position and render the one with highest layer
                 const entitiesHere = this.getEntitiesAtPosition(y, x);
-                if(entitiesHere.length > 0){
+                if (entitiesHere.length > 0) {
                     // Sort by layer and get the topmost entity
-                    const topEntity = entitiesHere.reduce((top, current) => 
+                    const topEntity = entitiesHere.reduce((top, current) =>
                         current.getLayer() > top.getLayer() ? current : top
                     );
                     out += topEntity.getSprite();
