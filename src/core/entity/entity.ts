@@ -11,7 +11,7 @@ export class Entity {
     private x: number;
     private layer: number = 0;
 
-    constructor(y: number, x: number, sprite: string){
+    constructor(y: number, x: number, sprite: string) {
         this.y = y;
         this.x = x;
         this.sprite = sprite;
@@ -53,7 +53,7 @@ export class Entity {
      * @returns The sprite string
      */
     public getSprite(): string {
-        return this.sprite;
+        return this.sprite || "";
     }
 
     /**
