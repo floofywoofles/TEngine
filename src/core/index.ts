@@ -20,6 +20,7 @@ export { Color, ColorHelper } from "./helpers/color";
 export { CollisionHelper } from "./helpers/collision";
 export { PathfindingHelper, Heuristic } from "./helpers/pathfinding";
 export type { PathfindingOptions } from "./helpers/pathfinding";
+export { StateMachine } from "./helpers/state-machine";
 
 // Global utilities
 export { setConfigMap, getConfigKey } from "./global";

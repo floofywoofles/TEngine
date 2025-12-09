@@ -264,6 +264,72 @@ Heuristic.Chebyshev   // Best for 8-directional movement
 Heuristic.Octile      // Optimized for diagonal movement
 ```
 
+### StateMachine
+
+State machine system for managing game states, entity states, and AI behavior:
+
+```typescript
+import { StateMachine } from "./src/core/helpers/state-machine";
+
+// Create state machine
+const stateMachine = new StateMachine("idle");
+
+// Add states with callbacks
+stateMachine.addState("idle", {
+  onEnter: (fromState) => console.log("Entered idle"),
+  onUpdate: (deltaTime) => {
+    // Update logic
+  },
+  onExit: (toState) => console.log("Exited idle")
+});
+
+stateMachine.addState("walking", {
+  onEnter: () => this.setSprite(">"),
+  onUpdate: (deltaTime) => {
+    this.move(0, 1 * deltaTime);
+  }
+});
+
+// Define transitions
+stateMachine.addTransition("idle", "walking");
+stateMachine.addTransition("walking", "idle");
+
+// Transition between states
+stateMachine.transitionTo("walking");
+
+// Check state
+if (stateMachine.isInState("walking")) {
+  // Do something
+}
+
+// Update in game loop
+stateMachine.update(deltaTime);
+
+// Global transition callback
+stateMachine.onTransition((fromState, toState) => {
+  console.log(`${fromState} -> ${toState}`);
+});
+
+// Bidirectional transitions
+stateMachine.addBidirectionalTransition("idle", "walking");
+
+// Force transition (bypass checks)
+stateMachine.forceTransitionTo("walking");
+
+// State data
+stateMachine.setStateData("walking", { speed: 5 });
+const data = stateMachine.getStateData("walking");
+
+// Query states
+const current = stateMachine.getCurrentState();
+const previous = stateMachine.getPreviousState();
+const transitions = stateMachine.getTransitionsFrom("idle");
+const allStates = stateMachine.getStateNames();
+
+// Reset to initial state
+stateMachine.reset();
+```
+
 ## Advanced Systems
 
 ### GameLoop
